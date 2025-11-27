@@ -166,5 +166,108 @@ export default {
     errorAccounts: 'Error',
     totalRequests: 'Total Requests',
     totalTokens: 'Total Tokens'
+  },
+
+  // Account expiry modal
+  expiry: {
+    modalTitle: 'Modify Expiry Time',
+    modalSubtitle: 'Set new expiry time for "{name}"',
+    currentStatus: 'Current Status',
+    neverExpires: 'Never Expires',
+    selectDuration: 'Select new duration',
+    customDate: 'Custom',
+    selectDateTime: 'Select date and time',
+    dateTimeHint: 'Select a future date and time as expiry',
+    newExpiryTime: 'New Expiry Time',
+    cancel: 'Cancel',
+    save: 'Save Changes',
+    saving: 'Saving...',
+    quickOptions: {
+      never: 'Never Expires',
+      '30d': '30 Days',
+      '90d': '90 Days',
+      '180d': '180 Days',
+      '365d': '1 Year',
+      '730d': '2 Years'
+    },
+    status: {
+      expired: 'Expired',
+      expiresInDays: 'Expires in {days} days',
+      expiresInMonths: 'Expires in {months} months'
+    }
+  },
+
+  // Account form extended
+  formExtended: {
+    editAccount: 'Edit Account',
+    addAccount: 'Add Account',
+    basicInfo: 'Basic Information',
+    authentication: 'Authorization & Authentication',
+    selectPlatform: 'Select Platform',
+    selectSpecificPlatform: 'Select specific platform type:',
+    droidExclusive: 'Droid Exclusive',
+    addMethod: 'Add Method',
+    usageVisualization: 'Usage Visualization',
+    manualAccessToken: 'Manual Access Token Input',
+    useApiKey: 'Use API Key (Multiple Supported)',
+    accountName: 'Account Name',
+    accountNamePlaceholder: 'Set an easily recognizable name for the account',
+    description: 'Description',
+    descriptionOptional: 'Description (Optional)',
+    descriptionPlaceholder: 'Account purpose description...',
+    accountType: 'Account Type',
+    sharedAccount: 'Shared Account',
+    dedicatedAccount: 'Dedicated Account',
+    groupScheduling: 'Group Scheduling',
+    accountTypeHint:
+      'Shared account: used by all API Keys; Dedicated account: used only by specific API Keys; Group scheduling: join group for group-based scheduling',
+    expiryTime: 'Expiry Time',
+    expiryTimeOptional: 'Expiry Time (Optional)',
+    expiryOptions: {
+      never: 'Never Expires',
+      '30d': '30 Days',
+      '90d': '90 Days',
+      '180d': '180 Days',
+      '365d': '365 Days',
+      custom: 'Custom Date'
+    },
+    willExpireOn: 'Will expire on {date}',
+    accountNeverExpires: 'Account never expires',
+    expiryHint:
+      'Set the expiry time for Claude Max/Pro subscription, scheduling will stop after expiration',
+    selectGroup: 'Select Group',
+    selectGroupRequired: 'Select Group *',
+    noGroupsAvailable: 'No groups available',
+    groupMemberCount: '{count} members',
+    createNewGroup: 'Create New Group',
+    projectId: 'Project ID',
+    projectIdOptional: 'Project ID (Optional)',
+    projectIdPlaceholder: 'e.g.: verdant-wares-464411-k9',
+    projectIdHint:
+      'Some Google accounts (especially those linked to Google Cloud) are identified as Workspace accounts and require an additional project ID.',
+    projectIdVisit: 'Visit',
+    projectIdFormat: ', usually in string format',
+    projectIdWarning: '⚠️ Note: Copy the Project ID, not the Project Number!',
+    projectIdTip:
+      '<strong>Tip:</strong> If your account is a regular personal account (not linked to Google Cloud), please leave this field empty.',
+    awsAccessKeyId: 'AWS Access Key ID *',
+    awsAccessKeyIdPlaceholder: 'Enter AWS Access Key ID',
+    awsSecretAccessKey: 'AWS Secret Access Key *',
+    awsSecretAccessKeyPlaceholder: 'Enter AWS Secret Access Key',
+    awsRegion: 'AWS Region *',
+    awsRegionPlaceholder: 'e.g.: us-east-1',
+    awsRegionList: 'Common Regions:',
+    regions: {
+      'us-east-1': 'us-east-1 (US East)',
+      'us-west-2': 'us-west-2 (US West)',
+      'eu-west-1': 'eu-west-1 (Europe Ireland)',
+      'ap-southeast-1': 'ap-southeast-1 (Singapore)',
+      'ap-northeast-1': 'ap-northeast-1 (Tokyo)',
+      'eu-central-1': 'eu-central-1 (Frankfurt)'
+    },
+    sessionToken: 'Session Token',
+    sessionTokenOptional: 'Session Token (Optional)',
+    sessionTokenPlaceholder: 'If using temporary credentials, enter session token',
+    sessionTokenHint: 'Only required when using temporary AWS credentials'
   }
 }
