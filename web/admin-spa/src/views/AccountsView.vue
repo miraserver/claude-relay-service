@@ -4,10 +4,10 @@
       <div class="mb-4 flex flex-col gap-4 sm:mb-6">
         <div>
           <h3 class="mb-1 text-lg font-bold text-gray-900 dark:text-gray-100 sm:mb-2 sm:text-xl">
-            账户管理
+            {{ $t('accounts.header.title') }}
           </h3>
           <p class="text-sm text-gray-600 dark:text-gray-400 sm:text-base">
-            管理 Claude、Gemini、OpenAI 等账户与代理配置
+            {{ $t('accounts.header.subtitle') }}
           </p>
         </div>
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -23,7 +23,7 @@
                 icon="fa-sort-amount-down"
                 icon-color="text-indigo-500"
                 :options="sortOptions"
-                placeholder="选择排序"
+                :placeholder="$t('accounts.filters.sortBy')"
                 @change="sortAccounts()"
               />
             </div>
@@ -38,7 +38,7 @@
                 icon="fa-server"
                 icon-color="text-blue-500"
                 :options="platformOptions"
-                placeholder="选择平台"
+                :placeholder="$t('accounts.filters.platform')"
                 @change="filterByPlatform"
               />
             </div>
@@ -53,7 +53,7 @@
                 icon="fa-layer-group"
                 icon-color="text-purple-500"
                 :options="groupOptions"
-                placeholder="选择分组"
+                :placeholder="$t('accounts.filters.group')"
                 @change="filterByGroup"
               />
             </div>
@@ -67,7 +67,7 @@
                 <input
                   v-model="searchKeyword"
                   class="h-10 w-full rounded-lg border border-gray-200 bg-white px-3 pl-9 text-sm text-gray-700 placeholder-gray-400 shadow-sm transition-all duration-200 hover:border-gray-300 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:placeholder-gray-500 dark:hover:border-gray-500"
-                  placeholder="搜索账户名称..."
+                  :placeholder="$t('accounts.filters.searchPlaceholder')"
                   type="text"
                 />
                 <i class="fas fa-search absolute left-3 text-sm text-cyan-500" />
@@ -86,7 +86,7 @@
             <!-- 刷新按钮 -->
             <div class="relative">
               <el-tooltip
-                content="刷新数据 (Ctrl/⌘+点击强制刷新所有缓存)"
+                :content="$t('accounts.actions.refreshTooltip')"
                 effect="dark"
                 placement="bottom"
               >
@@ -106,7 +106,11 @@
                       accountsLoading ? 'fa-spinner fa-spin' : 'fa-sync-alt'
                     ]"
                   />
-                  <span class="relative">刷新</span>
+                  <span class="relative">{{
+                    accountsLoading
+                      ? $t('accounts.actions.refreshing')
+                      : $t('accounts.actions.refresh')
+                  }}</span>
                 </button>
               </el-tooltip>
             </div>
@@ -117,7 +121,9 @@
               @click="toggleSelectionMode"
             >
               <i :class="showCheckboxes ? 'fas fa-times' : 'fas fa-check-square'"></i>
-              <span>{{ showCheckboxes ? '取消选择' : '选择' }}</span>
+              <span>{{
+                showCheckboxes ? $t('accounts.actions.cancel') : $t('accounts.filters.clearSearch')
+              }}</span>
             </button>
 
             <!-- 批量删除按钮 -->
@@ -130,7 +136,9 @@
                 class="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 opacity-0 blur transition duration-300 group-hover:opacity-20"
               ></div>
               <i class="fas fa-trash relative text-red-600 dark:text-red-400" />
-              <span class="relative">删除选中 ({{ selectedAccounts.length }})</span>
+              <span class="relative"
+                >{{ $t('accounts.actions.batchDelete') }} ({{ selectedAccounts.length }})</span
+              >
             </button>
 
             <!-- 添加账户按钮 -->
@@ -139,7 +147,7 @@
               @click.stop="openCreateAccountModal"
             >
               <i class="fas fa-plus"></i>
-              <span>添加账户</span>
+              <span>{{ $t('accounts.actions.addAccount') }}</span>
             </button>
           </div>
         </div>
@@ -147,7 +155,7 @@
 
       <div v-if="accountsLoading" class="py-12 text-center">
         <div class="loading-spinner mx-auto mb-4" />
-        <p class="text-gray-500 dark:text-gray-400">正在加载账户...</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ $t('accounts.table.loading') }}</p>
       </div>
 
       <div v-else-if="sortedAccounts.length === 0" class="py-12 text-center">
@@ -156,8 +164,10 @@
         >
           <i class="fas fa-user-circle text-xl text-gray-400" />
         </div>
-        <p class="text-lg text-gray-500 dark:text-gray-400">暂无账户</p>
-        <p class="mt-2 text-sm text-gray-400 dark:text-gray-500">点击上方按钮添加您的第一个账户</p>
+        <p class="text-lg text-gray-500 dark:text-gray-400">{{ $t('accounts.table.noData') }}</p>
+        <p class="mt-2 text-sm text-gray-400 dark:text-gray-500">
+          {{ $t('accounts.actions.addAccount') }}
+        </p>
       </div>
 
       <!-- 桌面端表格视图 -->
@@ -180,7 +190,7 @@
                 class="w-[22%] min-w-[180px] cursor-pointer px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600"
                 @click="sortAccounts('name')"
               >
-                名称
+                {{ $t('accounts.table.name') }}
                 <i
                   v-if="accountsSortBy === 'name'"
                   :class="[
@@ -195,7 +205,7 @@
                 class="w-[15%] min-w-[120px] cursor-pointer px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600"
                 @click="sortAccounts('platform')"
               >
-                平台/类型
+                {{ $t('accounts.table.platform') }}
                 <i
                   v-if="accountsSortBy === 'platform'"
                   :class="[
@@ -210,7 +220,7 @@
                 class="w-[12%] min-w-[110px] cursor-pointer px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600"
                 @click="sortAccounts('expiresAt')"
               >
-                到期时间
+                {{ $t('accounts.table.expiry') }}
                 <i
                   v-if="accountsSortBy === 'expiresAt'"
                   :class="[
@@ -225,7 +235,7 @@
                 class="w-[12%] min-w-[100px] cursor-pointer px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600"
                 @click="sortAccounts('status')"
               >
-                状态
+                {{ $t('accounts.table.status') }}
                 <i
                   v-if="accountsSortBy === 'status'"
                   :class="[
@@ -240,7 +250,7 @@
                 class="w-[8%] min-w-[80px] cursor-pointer px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600"
                 @click="sortAccounts('priority')"
               >
-                优先级
+                {{ $t('accounts.table.priority') }}
                 <i
                   v-if="accountsSortBy === 'priority'"
                   :class="[
@@ -254,18 +264,18 @@
               <th
                 class="w-[10%] min-w-[100px] px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300"
               >
-                代理
+                {{ $t('accounts.table.proxy') }}
               </th>
               <th
                 class="w-[10%] min-w-[90px] px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300"
               >
-                今日使用
+                {{ $t('accounts.table.todayUsage') }}
               </th>
               <th
                 class="w-[10%] min-w-[100px] px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300"
               >
                 <div class="flex items-center gap-2">
-                  <span>会话窗口</span>
+                  <span>{{ $t('accounts.table.sessionWindow') }}</span>
                   <el-tooltip placement="top">
                     <template #content>
                       <div
@@ -384,12 +394,12 @@
               <th
                 class="w-[8%] min-w-[80px] px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300"
               >
-                最后使用
+                {{ $t('accounts.table.lastUsed') }}
               </th>
               <th
                 class="w-[15%] min-w-[180px] px-3 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300"
               >
-                操作
+                {{ $t('accounts.table.actions') }}
               </th>
             </tr>
           </thead>
@@ -1181,27 +1191,27 @@
                   <button
                     v-if="canViewUsage(account)"
                     class="rounded bg-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-200"
-                    :title="'查看使用详情'"
+                    :title="$t('accounts.actions.viewDetails')"
                     @click="openAccountUsageModal(account)"
                   >
                     <i class="fas fa-chart-line" />
-                    <span class="ml-1">详情</span>
+                    <span class="ml-1">{{ $t('accounts.actions.viewDetails') }}</span>
                   </button>
                   <button
                     class="rounded bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-200"
-                    :title="'编辑账户'"
+                    :title="$t('accounts.actions.edit')"
                     @click="editAccount(account)"
                   >
                     <i class="fas fa-edit" />
-                    <span class="ml-1">编辑</span>
+                    <span class="ml-1">{{ $t('accounts.actions.edit') }}</span>
                   </button>
                   <button
                     class="rounded bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700 transition-colors hover:bg-red-200"
-                    :title="'删除账户'"
+                    :title="$t('accounts.actions.delete')"
                     @click="deleteAccount(account)"
                   >
                     <i class="fas fa-trash" />
-                    <span class="ml-1">删除</span>
+                    <span class="ml-1">{{ $t('accounts.actions.delete') }}</span>
                   </button>
                 </div>
               </td>

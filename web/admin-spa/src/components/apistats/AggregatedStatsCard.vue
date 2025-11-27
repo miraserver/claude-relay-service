@@ -5,10 +5,14 @@
     >
       <span class="flex items-center">
         <i class="fas fa-chart-pie mr-2 text-sm text-orange-500 md:mr-3 md:text-base" />
-        使用占比
+        {{ $t('apistats.aggregated.title') }}
       </span>
       <span class="text-xs font-normal text-gray-600 dark:text-gray-400 sm:ml-2 md:text-sm"
-        >({{ statsPeriod === 'daily' ? '今日' : '本月' }})</span
+        >({{
+          statsPeriod === 'daily'
+            ? $t('apistats.overview.today')
+            : $t('apistats.overview.thisMonth')
+        }})</span
       >
     </h3>
 
@@ -17,7 +21,7 @@
       <div v-for="(stat, index) in topKeys" :key="stat.apiId" class="relative">
         <div class="mb-1 flex items-center justify-between text-sm">
           <span class="truncate font-medium text-gray-700 dark:text-gray-300">
-            {{ stat.name || `Key ${index + 1}` }}
+            {{ stat.name || $t('apistats.aggregated.keyLabel', { index: index + 1 }) }}
           </span>
           <span class="text-xs text-gray-600 dark:text-gray-400">
             {{ calculatePercentage(stat) }}%
@@ -33,7 +37,10 @@
         <div
           class="mt-1 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400"
         >
-          <span>{{ formatNumber(getStatUsage(stat)?.requests || 0) }}次</span>
+          <span
+            >{{ formatNumber(getStatUsage(stat)?.requests || 0) }}
+            {{ $t('apistats.aggregated.requests') }}</span
+          >
           <span>{{ getStatUsage(stat)?.formattedCost || '$0.00' }}</span>
         </div>
       </div>
@@ -41,7 +48,7 @@
       <!-- 其他Keys汇总 -->
       <div v-if="otherKeysCount > 0" class="border-t border-gray-200 pt-2 dark:border-gray-700">
         <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-          <span>其他 {{ otherKeysCount }} 个Keys</span>
+          <span>{{ $t('apistats.aggregated.otherKeys', { count: otherKeysCount }) }}</span>
           <span>{{ otherPercentage }}%</span>
         </div>
       </div>
@@ -54,7 +61,7 @@
     >
       <div class="text-center">
         <i class="fas fa-chart-pie mb-2 text-2xl" />
-        <p>使用占比仅在多Key查询时显示</p>
+        <p>{{ $t('apistats.aggregated.multiKeyOnly') }}</p>
       </div>
     </div>
 
@@ -63,7 +70,7 @@
       class="flex h-32 items-center justify-center text-sm text-gray-500 dark:text-gray-400"
     >
       <i class="fas fa-chart-pie mr-2" />
-      暂无数据
+      {{ $t('apistats.models.noData') }}
     </div>
   </div>
 </template>

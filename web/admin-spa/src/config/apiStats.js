@@ -1,5 +1,6 @@
 // API Stats 专用 API 客户端
 // 与管理员 API 隔离，不需要认证
+import { useI18n } from 'vue-i18n'
 
 class ApiStatsClient {
   constructor() {
@@ -26,7 +27,10 @@ class ApiStatsClient {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || `请求失败: ${response.status}`)
+        // Get translation for error message
+        const { t } = useI18n()
+        const errorMsg = data.message || `${t('apistats.errors.requestFailed')}: ${response.status}`
+        throw new Error(errorMsg)
       }
 
       return data

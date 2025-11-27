@@ -45,7 +45,10 @@
     "data:export:encrypted": "node scripts/data-transfer-enhanced.js export --decrypt=false",
     "data:import:enhanced": "node scripts/data-transfer-enhanced.js import",
     "data:debug": "node scripts/debug-redis-keys.js",
-    "test:pricing-fallback": "node scripts/test-pricing-fallback.js"
+    "test:pricing-fallback": "node scripts/test-pricing-fallback.js",
+    "i18n:check": "node scripts/find-untranslated.js",
+    "i18n:setup-hooks": "node scripts/setup-hooks.js",
+    "update:upstream": "powershell -ExecutionPolicy Bypass -File scripts/update-from-upstream.ps1"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.861.0",

@@ -2,8 +2,9 @@
   <div
     class="relative flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8"
   >
-    <!-- 主题切换按钮 -->
-    <div class="fixed right-4 top-4 z-10">
+    <!-- 主题切换和переключатель языка -->
+    <div class="fixed right-4 top-4 z-10 flex items-center gap-3">
+      <LanguageSelector />
       <ThemeToggle mode="dropdown" />
     </div>
 
@@ -26,10 +27,10 @@
           <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white">Claude Relay</span>
         </div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-          User Sign In
+          {{ $t('auth.signIn') }}
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-          Sign in to your account to manage your API keys
+          {{ $t('auth.signInSubtitle') }}
         </p>
       </div>
 
@@ -40,7 +41,7 @@
               class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               for="username"
             >
-              Username
+              {{ $t('auth.fields.username') }}
             </label>
             <div class="mt-1">
               <input
@@ -50,7 +51,7 @@
                 class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400 sm:text-sm"
                 :disabled="loading"
                 name="username"
-                placeholder="Enter your username"
+                :placeholder="$t('auth.fields.usernamePlaceholder')"
                 required
                 type="text"
               />
@@ -62,7 +63,7 @@
               class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               for="password"
             >
-              Password
+              {{ $t('auth.fields.password') }}
             </label>
             <div class="mt-1">
               <input
@@ -72,7 +73,7 @@
                 class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400 sm:text-sm"
                 :disabled="loading"
                 name="password"
-                placeholder="Enter your password"
+                :placeholder="$t('auth.fields.passwordPlaceholder')"
                 required
                 type="password"
               />
@@ -127,7 +128,7 @@
                   ></path>
                 </svg>
               </span>
-              {{ loading ? 'Signing In...' : 'Sign In' }}
+              {{ loading ? $t('auth.buttons.signingIn') : $t('auth.buttons.signIn') }}
             </button>
           </div>
 
@@ -136,7 +137,7 @@
               class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
               to="/admin-login"
             >
-              Admin Login
+              {{ $t('auth.adminLogin') }}
             </router-link>
           </div>
         </form>
@@ -148,12 +149,14 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useThemeStore } from '@/stores/theme'
 import { showToast } from '@/utils/toast'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
 
 const router = useRouter()
+const { t } = useI18n()
 const userStore = useUserStore()
 const themeStore = useThemeStore()
 
@@ -167,7 +170,7 @@ const form = reactive({
 
 const handleLogin = async () => {
   if (!form.username || !form.password) {
-    error.value = 'Please enter both username and password'
+    error.value = t('auth.messages.enterBoth')
     return
   }
 
@@ -180,11 +183,11 @@ const handleLogin = async () => {
       password: form.password
     })
 
-    showToast('Login successful!', 'success')
+    showToast(t('auth.messages.loginSuccess'), 'success')
     router.push('/user-dashboard')
   } catch (err) {
     console.error('Login error:', err)
-    error.value = err.response?.data?.message || err.message || 'Login failed'
+    error.value = err.response?.data?.message || err.message || t('auth.messages.loginFailed')
   } finally {
     loading.value = false
   }

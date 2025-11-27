@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { apiStatsClient } from '@/config/apiStats'
 
 export const useApiStatsStore = defineStore('apistats', () => {
+  const { t } = useI18n()
   // 状态
   const apiKey = ref('')
   const apiId = ref(null)
@@ -95,13 +97,13 @@ export const useApiStatsStore = defineStore('apistats', () => {
     const trimmedKey = apiKey.value.trim()
 
     if (!trimmedKey) {
-      error.value = '请输入 API Key'
+      error.value = t('apistats.errors.noKey')
       return
     }
 
     // 验证 API Key 格式：长度应在 10-512 之间
     if (trimmedKey.length < 10 || trimmedKey.length > 512) {
-      error.value = 'API Key 格式无效：长度应在 10-512 个字符之间'
+      error.value = t('apistats.errors.invalidKey')
       return
     }
 
@@ -133,14 +135,14 @@ export const useApiStatsStore = defineStore('apistats', () => {
           // 更新 URL
           updateURL()
         } else {
-          throw new Error(statsResult.message || '查询失败')
+          throw new Error(statsResult.message || t('apistats.errors.queryFailed'))
         }
       } else {
-        throw new Error(idResult.message || '获取 API Key ID 失败')
+        throw new Error(idResult.message || t('apistats.errors.getKeyIdFailed'))
       }
     } catch (err) {
       console.error('Query stats error:', err)
-      error.value = err.message || '查询统计数据失败，请检查您的 API Key 是否正确'
+      error.value = err.message || t('apistats.errors.queryStatsFailedCheck')
       statsData.value = null
       modelStats.value = []
       apiId.value = null
